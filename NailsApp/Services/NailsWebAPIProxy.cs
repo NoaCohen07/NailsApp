@@ -27,11 +27,11 @@ namespace NailsApp.Services
 
         #region with tunnel
         //Define the serevr IP address! (should be realIP address if you are using a device that is not running on the same machine as the server)
-        private static string serverIP = "zcjpj75z-7034.euw.devtunnels.ms";
+        private static string serverIP = "ccbmqhq2-5088.euw.devtunnels.ms";
         private HttpClient client;
         private string baseUrl;
-        public static string BaseAddress = "https://zcjpj75z-7034.euw.devtunnels.ms/api/";
-        private static string ImageBaseAddress = "https://zcjpj75z-7034.euw.devtunnels.ms/";
+        public static string BaseAddress = "https://ccbmqhq2-5088.euw.devtunnels.ms/api/";
+        private static string ImageBaseAddress = "https://ccbmqhq2-5088.euw.devtunnels.ms/";
         #endregion
 
         public NailsWebAPIProxy()
