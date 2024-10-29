@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using NailsApp.Views;
+using NailsApp.ViewModels;
+using NailsApp.Services;
 
 namespace NailsApp
 {
@@ -25,9 +28,13 @@ namespace NailsApp
 
             return builder.Build();
         }
+      
         public static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
         {
-            
+            builder.Services.AddTransient<LoginView>();
+            builder.Services.AddTransient<SignUpView>();
+            builder.Services.AddTransient<SignUpCustomerView>();
+            builder.Services.AddTransient<SignUpManicuristView>();
             builder.Services.AddTransient<AppShell>();
 
             return builder;
@@ -35,12 +42,19 @@ namespace NailsApp
 
         public static MauiAppBuilder RegisterDataServices(this MauiAppBuilder builder)
         {
-            
+            builder.Services.AddSingleton<NailsWebAPIProxy>();
+
             return builder;
         }
         public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder)
         {
-           
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<SignUpViewModel>();
+            builder.Services.AddTransient<SignUpCustomerViewModel>();
+
+            builder.Services.AddTransient<SignUpManicuristViewModel>();
+
+
             return builder;
         }
     }
