@@ -1,13 +1,15 @@
-﻿namespace NailsApp
+﻿using System.Windows.Input;
+
+namespace NailsApp
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
 
-        public MainPage()
-        {
-            InitializeComponent();
-        }
+        //public MainPage()
+        //{
+        //    InitializeComponent();
+        //}
 
         private void OnCounterClicked(object sender, EventArgs e)
         {
@@ -19,6 +21,13 @@
                 CounterBtn.Text = $"Clicked {count} times";
 
             SemanticScreenReader.Announce(CounterBtn.Text);
+        }
+        public ICommand TapCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
+
+        public MainPage()
+        {
+            InitializeComponent();
+            BindingContext = this;
         }
     }
 

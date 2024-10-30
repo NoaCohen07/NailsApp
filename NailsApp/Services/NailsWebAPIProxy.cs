@@ -59,6 +59,7 @@ namespace NailsApp.Services
             string url = $"{this.baseUrl}login";
             try
             {
+              
                 //Call the server API
                 string json = JsonSerializer.Serialize(userInfo);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");

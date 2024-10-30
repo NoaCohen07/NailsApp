@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NailsApp.ViewModels
 {
-    internal class SignUpManicuristViewModel
+    public class SignUpManicuristViewModel : ViewModelBase
     {
     }
 }

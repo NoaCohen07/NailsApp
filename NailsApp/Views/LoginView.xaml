@@ -3,35 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NailsApp.Views.LoginView"
              Title="LoginView">
-    <VerticalStackLayout>
+
+    
+       
+        <VerticalStackLayout>
+
+        <Button 
+        Text="Back to Home"
+        Command="{Binding HomeCommand}" 
+        IsEnabled="{Binding NotInServerCall}"
+        HorizontalOptions="Start"
+        BackgroundColor="LightPink"
+         TextColor="Black"
+            Margin="10"
+        />
 
         <Label 
         Text="Email"
         />
-        
-        <Entry 
-        Placeholder="Email"
-        Keyboard="Email"
-        Text="{Binding Email}" IsEnabled="{Binding NotInServerCall}"/>
+
+            <Entry 
+     Placeholder="Email"
+     Keyboard="Email"
+     Text="{Binding Email}" IsEnabled="{Binding NotInServerCall}"/>
+
+            <Label 
+     Text="Password"
+     />
+
+            <Entry 
+     Placeholder="Password"
+     IsPassword="True"
+     Text="{Binding Password}" IsEnabled="{Binding NotInServerCall}"/>
+
+        <Label IsEnabled="{Binding NotInServerCall}">
+            <Label.FormattedText>
+                <FormattedString>
+                    
+                    <Span Text="Forgot Password?"
+                  TextColor="Blue"
+                  TextDecorations="Underline">
+                        <Span.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ForgotPassCommand}"/>
+                                          <!--CommandParameter="https://learn.microsoft.com/dotnet/maui/"--> 
+                        </Span.GestureRecognizers>
+                    </Span>
+                   
+                </FormattedString>
+            </Label.FormattedText>
+          
+        </Label>
 
         <Label 
-        Text="Password"
-        />
-        
-        <Entry 
-        Placeholder="Password"
-        IsPassword="True"
-        Text="{Binding Password}" IsEnabled="{Binding NotInServerCall}"/>
+     Text="{Binding ErrorMsg}" 
+     TextColor="Red"/>
 
-        <Button 
-        Text="Login"
-        Command="{Binding LoginCommand}" 
-        IsEnabled="{Binding NotInServerCall}"/>
 
-        <Button 
-        Text="Don't have an account? Sign Up"
-        Command="{Binding SignUpCommand}" 
-        IsEnabled="{Binding NotInServerCall}"/>
+            <Button 
+     Text="Login"
+     Command="{Binding LoginCommand}" 
+     IsEnabled="{Binding NotInServerCall}"
+                BackgroundColor="LightPink"
+ TextColor="Black"
+                Margin="5"
+                />
 
-    </VerticalStackLayout>
+            <Button 
+     Text="Don't have an account? Sign Up"
+     Command="{Binding SignUpCommand}" 
+     IsEnabled="{Binding NotInServerCall}"
+                BackgroundColor="LightPink"
+ TextColor="Black"/>
+
+        </VerticalStackLayout>
+   
 </ContentPage>

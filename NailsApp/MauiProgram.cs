@@ -36,7 +36,9 @@ namespace NailsApp
             builder.Services.AddTransient<SignUpCustomerView>();
             builder.Services.AddTransient<SignUpManicuristView>();
             builder.Services.AddTransient<AppShell>();
-
+            builder.Services.AddTransient<HomeView>();
+            builder.Services.AddTransient<ForgotPasswordView>();
+            builder.Services.AddTransient<ProfileView>();
             return builder;
         }
 
@@ -51,10 +53,10 @@ namespace NailsApp
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<SignUpCustomerViewModel>();
-
+            builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<SignUpManicuristViewModel>();
-
-
+            builder.Services.AddTransient<ForgotPasswordViewModel>();
+            builder.Services.AddTransient<ProfileViewModel>();
             return builder;
         }
     }

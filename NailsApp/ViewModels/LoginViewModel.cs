@@ -21,6 +21,8 @@ namespace NailsApp.ViewModels
             this.proxy = proxy;
             LoginCommand = new Command(OnLogin);
             SignUpCommand = new Command(OnSignUp);
+            HomeCommand = new Command(OnHome);
+            ForgotPassCommand=new Command(OnForgotPass);
             email = "";
             password = "";
             InServerCall = false;
@@ -98,11 +100,11 @@ namespace NailsApp.ViewModels
                 ErrorMsg = "";
                 //Navigate to the main page
                 AppShell shell = serviceProvider.GetService<AppShell>();
-               // TasksViewModel tasksViewModel = serviceProvider.GetService<TasksViewModel>();
-                //tasksViewModel.Refresh(); //Refresh data and user in the tasksview model as it is a singleton
+                ProfileViewModel profileViewModel=serviceProvider.GetService<ProfileViewModel>();
+               // profileViewModel.Refresh(); //Refresh data and user in the tasksview model as it is a singleton
                 ((App)Application.Current).MainPage = shell;
                 Shell.Current.FlyoutIsPresented = false; //close the flyout
-               // Shell.Current.GoToAsync("Tasks"); //Navigate to the Tasks tab page
+               Shell.Current.GoToAsync("Profile"); //Navigate to the Tasks tab page
             }
         }
 
@@ -113,6 +115,28 @@ namespace NailsApp.ViewModels
             Password = "";
             // Navigate to the Register View page
             ((App)Application.Current).MainPage.Navigation.PushAsync(serviceProvider.GetService<SignUpView>());
+        }
+
+        public ICommand HomeCommand { get; }
+
+        private void OnHome()
+        {
+            ErrorMsg = "";
+            Email = "";
+            Password = "";
+            // Navigate to the Register View page
+            ((App)Application.Current).MainPage.Navigation.PushAsync(serviceProvider.GetService<HomeView>());
+        }
+
+        public ICommand ForgotPassCommand { get; }
+
+        private void OnForgotPass()
+        {
+            ErrorMsg = "";
+            Email = "";
+            Password = "";
+            // Navigate to the Register View page
+            ((App)Application.Current).MainPage.Navigation.PushAsync(serviceProvider.GetService<ForgotPasswordView>());
         }
     }
 }

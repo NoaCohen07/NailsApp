@@ -2,9 +2,9 @@ using NailsApp.ViewModels;
 
 namespace NailsApp.Views;
 
-public partial class SignUpView : ContentPage
+public partial class ForgotPasswordView : ContentPage
 {
-	public SignUpView(SignUpViewModel vm)
+	public ForgotPasswordView(ForgotPasswordViewModel vm)
 	{
 		BindingContext = vm;
 		InitializeComponent();

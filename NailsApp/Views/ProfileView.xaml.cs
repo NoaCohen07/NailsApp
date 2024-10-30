@@ -2,9 +2,9 @@ using NailsApp.ViewModels;
 
 namespace NailsApp.Views;
 
-public partial class SignUpView : ContentPage
+public partial class ProfileView : ContentPage
 {
-	public SignUpView(SignUpViewModel vm)
+	public ProfileView(ProfileViewModel vm)
 	{
 		BindingContext = vm;
 		InitializeComponent();
