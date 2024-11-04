@@ -26,7 +26,7 @@ namespace NailsApp.Models
 
         public string UserAddress { get; set; } = null!;
 
-        public string Gender { get; set; } = null!;
+        public char? Gender { get; set; } = null!;
 
 
         public string Pass { get; set; } = null!;
