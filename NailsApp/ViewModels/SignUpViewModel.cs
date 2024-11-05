@@ -19,12 +19,15 @@ namespace NailsApp.ViewModels
             LogInCommand = new Command(OnLogIn);
             ShowPasswordCommand = new Command(OnShowPassword);
             UploadPhotoCommand = new Command(OnUploadPhoto);
+            UploadTakePhotoCommand=new Command(OnUploadTakePhoto);
             PhotoURL = proxy.GetDefaultProfilePhotoUrl();
             LocalPhotoPath = "";
             IsPassword = true;
             FirstNameError = "Name is required";
             LastNameError = "Last name is required";
             EmailError = "Email is required";
+            PhoneNumberError = "Phone number is required";
+            AddressError = "Address is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
         }
 
@@ -282,6 +285,31 @@ namespace NailsApp.ViewModels
         {
             try
             {
+                var result = await MediaPicker.Default.PickPhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Please select a photo",
+                });
+
+                if (result != null)
+                {
+                    // The user picked a file
+                    this.LocalPhotoPath = result.FullPath;
+                    this.PhotoURL = result.FullPath;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        public Command UploadTakePhotoCommand { get; }
+        //This method open the file picker to select a photo
+        private async void OnUploadTakePhoto()
+        {
+            try
+            {
                 var result = await MediaPicker.Default.CapturePhotoAsync(new MediaPickerOptions
                 {
                     Title = "Please select a photo",
@@ -296,6 +324,7 @@ namespace NailsApp.ViewModels
             }
             catch (Exception ex)
             {
+
             }
 
         }
