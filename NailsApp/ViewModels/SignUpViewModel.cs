@@ -502,7 +502,7 @@ namespace NailsApp.ViewModels
                 //If the registration was successful, navigate to the login page
                 if (newUser != null)
                 {
-                    //UPload profile imae if needed
+                    //Upload profile image if needed
                     if (!string.IsNullOrEmpty(LocalPhotoPath))
                     {
                         await proxy.LoginAsync(new LoginInfo { Email = newUser.Email, Password = newUser.Pass });
