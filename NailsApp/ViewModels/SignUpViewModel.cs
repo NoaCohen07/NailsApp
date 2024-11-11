@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using NailsApp.Models;
@@ -26,8 +27,10 @@ namespace NailsApp.ViewModels
             FirstNameError = "Name is required";
             LastNameError = "Last name is required";
             EmailError = "Email is required";
+            DateError = "Age is required";
             PhoneNumberError = "Phone number is required";
             AddressError = "Address is required";
+            DateError = "Age is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
         }
 
@@ -177,6 +180,75 @@ namespace NailsApp.ViewModels
             else
             {
                 EmailError = "Email is required";
+            }
+        }
+        #endregion
+
+        #region DOB
+
+
+        private bool showDateError;
+
+        public bool ShowDateError
+        {
+            get => showDateError;
+            set
+            {
+                showDateError = value;
+                OnPropertyChanged("ShowDateError");
+            }
+        }
+
+        private DateOnly date;
+
+        public DateOnly Date
+        {
+            get => date;
+            set
+            {
+                date = value;
+                ValidateDate();
+                OnPropertyChanged("Date");
+            }
+        }
+        
+        private DateOnly maxDate;
+
+        public DateOnly MaxDate
+        {
+            get => maxDate;
+            set
+            {
+                DateTime currentDateTime = DateTime.Now; // Current date and time
+                DateOnly currentDateOnly = DateOnly.FromDateTime(currentDateTime); // Convert to DateOnly
+                DateOnly dateMinus12Years = currentDateOnly.AddYears(-12);
+                maxDate = dateMinus12Years;
+                ValidateDate();
+                OnPropertyChanged("MaxDate");
+            }
+        }
+
+        private string dateError;
+
+        public string DateError
+        {
+            get => dateError;
+            set
+            {
+                dateError = value;
+                OnPropertyChanged("Date");
+            }
+        }
+
+        private void ValidateDate()
+        {
+            if (this.Date == null)
+            {
+                this.ShowDateError = true;
+            }
+            else
+            {
+                this.ShowDateError = false;
             }
         }
         #endregion
@@ -476,9 +548,10 @@ namespace NailsApp.ViewModels
             ValidatePassword();
             ValidatePhoneNumber();  
             ValidateAddress();
+            ValidateDate();
            
 
-            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError)
+            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError && !ShowDateError)
             {
                 //Create a new AppUser object with the data from the registration form
                 var newUser = new User
@@ -488,6 +561,7 @@ namespace NailsApp.ViewModels
                     Email = Email,
                     Pass = Password,
                     PhoneNumber = PhoneNumber,
+                    DateOfBirth=Date,
                     UserAddress = Address,
                     Gender=Gender,
                     IsManicurist=IsManicurist,
