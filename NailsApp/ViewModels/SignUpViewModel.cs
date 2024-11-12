@@ -122,6 +122,7 @@ namespace NailsApp.ViewModels
             this.ShowLastNameError = string.IsNullOrEmpty(LastName);
         }
         #endregion
+
         #region Email
         private bool showEmailError;
 
@@ -221,8 +222,8 @@ namespace NailsApp.ViewModels
             {
                 DateTime currentDateTime = DateTime.Now; // Current date and time
                 DateOnly currentDateOnly = DateOnly.FromDateTime(currentDateTime); // Convert to DateOnly
-                DateOnly dateMinus12Years = currentDateOnly.AddYears(-12);
-                maxDate = dateMinus12Years;
+                //DateOnly dateMinus10Years = currentDateOnly.AddYears(-10);
+                maxDate = currentDateOnly;
                 ValidateDate();
                 OnPropertyChanged("MaxDate");
             }
@@ -242,7 +243,21 @@ namespace NailsApp.ViewModels
 
         private void ValidateDate()
         {
-            if (this.Date == null)
+          
+            // Get the current date
+            DateTime currentDate = DateTime.Now;
+
+            // Calculate age by subtracting birth year from current year
+            int age = currentDate.Year - this.Date.Year;
+
+            // Adjust age if the birthday hasn't occurred yet this year
+            if (currentDate.Month < this.Date.Month ||
+                (currentDate.Month == this.Date.Month && currentDate.Day < this.Date.Day))
+            {
+                age--;
+            }
+
+            if (this.Date == null || age < 10)
             {
                 this.ShowDateError = true;
             }
@@ -252,6 +267,7 @@ namespace NailsApp.ViewModels
             }
         }
         #endregion
+
         #region Password
         private bool showPasswordError;
 
@@ -535,6 +551,7 @@ namespace NailsApp.ViewModels
             }
         }
         #endregion
+
         //Define a command for the register button
         public Command SignUpCommand { get; }
         public Command LogInCommand { get; }
@@ -567,7 +584,10 @@ namespace NailsApp.ViewModels
                     IsManicurist=IsManicurist,
                     IsManager = false
                 };
-
+                if (PhotoURL == null)
+                {
+                    newUser.ProfilePic = proxy.GetDefaultProfilePhotoUrl();
+                }
                 //Call the Register method on the proxy to register the new user
                 InServerCall = true;
                 newUser = await proxy.Register(newUser);

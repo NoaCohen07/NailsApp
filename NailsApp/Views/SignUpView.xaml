@@ -88,12 +88,13 @@ VerticalOptions="End">
                 <Label Text="Phone Number" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
                 <Label Text="{Binding PhoneNumberError}" IsVisible="{Binding ShowPhoneNumberError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
             </Grid>
-            <Entry Placeholder="Type Phone Number" Text="{Binding PhoneNumber}" Style="{StaticResource entryStyle}" />
+            <Entry Placeholder="Type Phone Number" Keyboard="Telephone" Text="{Binding PhoneNumber}" Style="{StaticResource entryStyle}" />
 
 
                 <!--DOB-->
 
                 <Label Text="Date of birth"/>
+            
                 <Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
                 <DatePicker  MaximumDate="{Binding MaxDate}"
             Date="{Binding Date}" />

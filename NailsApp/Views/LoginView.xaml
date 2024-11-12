@@ -8,7 +8,7 @@
        
         <VerticalStackLayout>
 
-        <Button 
+        <!--<Button 
         Text="Back to Home"
         Command="{Binding HomeCommand}" 
         IsEnabled="{Binding NotInServerCall}"
@@ -16,7 +16,7 @@
         BackgroundColor="LightPink"
          TextColor="Black"
             Margin="10"
-        />
+        />-->
 
         <Label 
         Text="Email"
@@ -63,8 +63,7 @@
      Text="Login"
      Command="{Binding LoginCommand}" 
      IsEnabled="{Binding NotInServerCall}"
-                BackgroundColor="LightPink"
- TextColor="Black"
+               Style="{StaticResource buttonStyle}"
                 Margin="5"
                 />
 
@@ -72,8 +71,7 @@
      Text="Don't have an account? Sign Up"
      Command="{Binding SignUpCommand}" 
      IsEnabled="{Binding NotInServerCall}"
-                BackgroundColor="LightPink"
- TextColor="Black"/>
+                Style="{StaticResource buttonStyle}"/>
 
         </VerticalStackLayout>
    
