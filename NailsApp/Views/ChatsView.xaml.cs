@@ -2,9 +2,9 @@ using NailsApp.ViewModels;
 
 namespace NailsApp.Views;
 
-public partial class HomeView : ContentPage
+public partial class ChatsView : ContentPage
 {
-	public HomeView(HomeViewModel vm)
+	public ChatsView(ChatsViewModel vm)
 	{
 		BindingContext = vm;
 		InitializeComponent();

@@ -32,6 +32,16 @@ namespace NailsApp.ViewModels
             AddressError = "Address is required";
             DateError = "Age is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
+
+            //DateTime currentDate = DateTime.Now.AddYears(-10);
+
+            // Subtract 10 years
+            DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
+
+            this.Date = dateMinusTenYears.AddDays(-1); 
+            MaxDate = dateMinusTenYears;
+
+
         }
 
         //Defiine properties for each field in the registration form including error messages and validation logic
@@ -200,31 +210,26 @@ namespace NailsApp.ViewModels
             }
         }
 
-        private DateOnly date;
+        private DateTime date;
 
-        public DateOnly Date
+        public DateTime Date
         {
             get => date;
             set
             {
                 date = value;
-                ValidateDate();
                 OnPropertyChanged("Date");
             }
         }
         
-        private DateOnly maxDate;
+        private DateTime maxDate;
 
-        public DateOnly MaxDate
+        public DateTime MaxDate
         {
             get => maxDate;
             set
             {
-                DateTime currentDateTime = DateTime.Now; // Current date and time
-                DateOnly currentDateOnly = DateOnly.FromDateTime(currentDateTime); // Convert to DateOnly
-                //DateOnly dateMinus10Years = currentDateOnly.AddYears(-10);
-                maxDate = currentDateOnly;
-                ValidateDate();
+                maxDate=value;
                 OnPropertyChanged("MaxDate");
             }
         }
@@ -241,31 +246,7 @@ namespace NailsApp.ViewModels
             }
         }
 
-        private void ValidateDate()
-        {
-          
-            // Get the current date
-            DateTime currentDate = DateTime.Now;
-
-            // Calculate age by subtracting birth year from current year
-            int age = currentDate.Year - this.Date.Year;
-
-            // Adjust age if the birthday hasn't occurred yet this year
-            if (currentDate.Month < this.Date.Month ||
-                (currentDate.Month == this.Date.Month && currentDate.Day < this.Date.Day))
-            {
-                age--;
-            }
-
-            if (this.Date == null || age < 10)
-            {
-                this.ShowDateError = true;
-            }
-            else
-            {
-                this.ShowDateError = false;
-            }
-        }
+    
         #endregion
 
         #region Password
@@ -565,10 +546,10 @@ namespace NailsApp.ViewModels
             ValidatePassword();
             ValidatePhoneNumber();  
             ValidateAddress();
-            ValidateDate();
+
            
 
-            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError && !ShowDateError)
+            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError)
             {
                 //Create a new AppUser object with the data from the registration form
                 var newUser = new User
@@ -578,7 +559,7 @@ namespace NailsApp.ViewModels
                     Email = Email,
                     Pass = Password,
                     PhoneNumber = PhoneNumber,
-                    DateOfBirth=Date,
+                    DateOfBirth=new DateOnly(Date.Year, Date.Month, Date.Day),
                     UserAddress = Address,
                     Gender=Gender,
                     IsManicurist=IsManicurist,
@@ -608,7 +589,7 @@ namespace NailsApp.ViewModels
                         }
                     }
                     InServerCall = false;
-
+                    await Application.Current.MainPage.DisplayAlert("Registration", "Sign up successful", "ok");
                     ((App)(Application.Current)).MainPage.Navigation.PopAsync();
                 }
                 else

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NailsApp.Views.SignUpView"
-             Title="SignUpView">
+             Title="Sign Up">
     <ScrollView>
     <Grid>
 
@@ -96,8 +96,7 @@ VerticalOptions="End">
                 <Label Text="Date of birth"/>
             
                 <Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
-                <DatePicker  MaximumDate="{Binding MaxDate}"
-            Date="{Binding Date}" />
+                <DatePicker  MaximumDate="{Binding MaxDate}" Date="{Binding Date}" />
              
 
                 <!--Address -->

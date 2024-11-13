@@ -13,6 +13,49 @@
         Title="Profile"
         ContentTemplate="{DataTemplate views:ProfileView}"
         Route="Profile" />
-        </FlyoutItem>
+
+        <Tab Title="Explore" Route="Explore">
+            <ShellContent
+            Title="Nail Inspo"
+            ContentTemplate="{DataTemplate views:NailInspoView}"
+            Route="NailInspo" />
+
+            <ShellContent
+            Title="Users"
+            ContentTemplate="{DataTemplate views:UsersView}"
+            Route="Users" />
+
+            <ShellContent
+            Title="Find Manicurist"
+            ContentTemplate="{DataTemplate views:FindManicuristView}"
+            Route="FindManicurist" />
+        </Tab>
+
+        <ShellContent
+        Title="Manicurist Map"
+        ContentTemplate="{DataTemplate views:ManicuristMapView}"
+        Route="ManicuristMap" />
+
+        <ShellContent
+        Title="Chats"
+        ContentTemplate="{DataTemplate views:ChatsView}"
+        Route="Chats" />
+
+        <ShellContent
+        Title="Favorites"
+        ContentTemplate="{DataTemplate views:FavoritesView}"
+        Route="Favorites" />
+
+        <ShellContent
+        Title="Nail Gallery"
+        ContentTemplate="{DataTemplate views:NailGalleryView}"
+        Route="NailGallery" />
+
+        <ShellContent
+        Title="Filter"
+        ContentTemplate="{DataTemplate views:FilterView}"
+        Route="Filter" />
+
+    </FlyoutItem>
 
 </Shell>
