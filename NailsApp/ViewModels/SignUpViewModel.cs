@@ -33,7 +33,7 @@ namespace NailsApp.ViewModels
             DateError = "Age is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
 
-            //DateTime currentDate = DateTime.Now.AddYears(-10);
+            
 
             // Subtract 10 years
             DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
