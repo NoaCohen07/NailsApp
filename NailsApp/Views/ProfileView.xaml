@@ -3,10 +3,168 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NailsApp.Views.ProfileView"
              Title="Profile">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <Grid>
+
+
+            <!-- Main Content -->
+            <VerticalStackLayout IsEnabled="{Binding NotInServerCall}" Padding="20">
+                <!-- Photo -->
+                <Frame BorderColor="Black" Padding="5" Margin="10" CornerRadius="50">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image x:Name="theImageBug" Source="{Binding PhotoURL}"  HeightRequest="150" IsEnabled="{Binding Change}"/>
+                        <Label Grid.Row="1"
+                               IsEnabled="{Binding Change}"
+Text="Click Here To Upload Photo!"
+TextColor="DeepPink"
+HorizontalOptions="Center"
+VerticalOptions="End">
+
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadPhotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label Grid.Row="2"
+                                IsEnabled="{Binding Change}"
+Text="Click Here To Take a Photo!"
+TextColor="DeepPink"
+HorizontalOptions="Center"
+VerticalOptions="End">
+
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadTakePhotoCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Frame>
+
+                <Button Text="Edit" Command="{Binding EditCommand}"/>
+                <!-- First Name -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="First Name" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding FirstNameError}" IsVisible="{Binding ShowFirstNameError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                </Grid>
+                <Entry Placeholder="Type First Name" Text="{Binding FirstName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+
+                <!-- Last Name -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Last Name" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding LastNameError}" IsVisible="{Binding ShowLastNameError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                </Grid>
+                <Entry Placeholder="Type Last Name" Text="{Binding LastName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+
+                <!-- Email -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Email" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding EmailError}" IsVisible="{Binding ShowEmailError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                </Grid>
+                <Entry Placeholder="Type Email" Text="{Binding Email}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+
+                <!--Phone Number -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Phone Number" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding PhoneNumberError}" IsVisible="{Binding ShowPhoneNumberError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                </Grid>
+                <Entry Placeholder="Type Phone Number" Keyboard="Telephone" Text="{Binding PhoneNumber}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}" />
+
+
+                <!--DOB-->
+
+                <Label Text="Date of birth"/>
+
+                <Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                <DatePicker  MaximumDate="{Binding MaxDate}" Date="{Binding Date}" IsEnabled="{Binding Change}" />
+
+
+                <!--Address -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Address" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding AddressError}" IsVisible="{Binding ShowAddressError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                </Grid>
+                <Entry Placeholder="Type Adress" Text="{Binding Address}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+
+
+                <!--Gender -->
+                <StackLayout RadioButtonGroup.GroupName="gender" RadioButtonGroup.SelectedValue="{Binding Gender}" Margin="10" IsEnabled="{Binding Change}">
+                    <Label Text="Gender" />
+                    <RadioButton Content="Female" Value='F' />
+                    <RadioButton Content="Male" Value='M'/>
+                    <RadioButton Content="Other" Value='O' IsChecked="True" />
+                </StackLayout>
+
+                <!--User Type -->
+                <StackLayout RadioButtonGroup.GroupName="userType" RadioButtonGroup.SelectedValue="{Binding IsManicurist}" Margin="20" IsEnabled="{Binding Change}">
+                    <!--<Label Text="User Type" />-->
+                    <RadioButton Content="Manicurist" Value="true"/>
+                    <RadioButton Content="Customer" Value="false" IsChecked="True"/>
+                </StackLayout>
+
+                <!-- Password -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Password" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
+                    <Label Text="{Binding PasswordError}" IsVisible="{Binding ShowPasswordError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" IsEnabled="{Binding Change}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="40" />
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Placeholder="Type Password" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{StaticResource entryStyle}" />
+                    <ImageButton Grid.Column="1" HeightRequest="25" Source="passwordeye.jpg" Command="{Binding ShowPasswordCommand}" />
+                </Grid>
+
+                <!-- Save Button -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Text="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding NotInServerCall}" Grid.Column="1" Style="{StaticResource buttonStyle}" IsVisible="{Binding Change}" />
+                  
+                </Grid>
+            </VerticalStackLayout>
+            <!-- Centered ActivityIndicator -->
+            <ActivityIndicator IsRunning="{Binding InServerCall}" 
+                   Color="Red" 
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+        </Grid>
+
+
+    </ScrollView>
 </ContentPage>

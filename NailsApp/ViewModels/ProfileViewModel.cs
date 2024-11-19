@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using static Java.Util.Jar.Attributes;
+using NailsApp.Models;
+using NailsApp.Services;
 
 namespace NailsApp.ViewModels
 {
@@ -12,10 +15,21 @@ namespace NailsApp.ViewModels
         private NailsWebAPIProxy proxy;
         public ProfileViewModel(NailsWebAPIProxy proxy)
         {
+            User u = ((App)Application.Current).LoggedInUser;//getting the current user using the game
+ 
             this.proxy = proxy;
-            //SignUpCommand = new Command(OnSignUp);
-            //LogInCommand = new Command(OnLogIn);
-            //ShowPasswordCommand = new Command(OnShowPassword);
+            TimeOnly time = new TimeOnly();
+            FirstName = u.FirstName;
+            LastName = u.LastName;
+            Email = u.Email;
+            Password = u.Pass;
+            Date = u.DateOfBirth.ToDateTime(time); 
+            PhoneNumber = u.PhoneNumber;
+            Address = u.UserAddress;
+            PhotoURL = u.ProfilePic;
+            Gender = (char)u.Gender;
+            EditCommand = new Command(OnEdit);
+            SaveCommand = new Command(OnSave);
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
             PhotoURL = proxy.GetDefaultProfilePhotoUrl();
@@ -190,7 +204,7 @@ namespace NailsApp.ViewModels
                 EmailError = "Email is required";
             }
         }
-        #endregion
+            #endregion
 
         #region DOB
 
@@ -530,19 +544,94 @@ namespace NailsApp.ViewModels
         }
         #endregion
 
-        #region IsEnabled
-        private bool isEnabled;
+        #region Change
+        private bool change;
 
-        public bool IsEnabled
+        public bool Change
         {
-            get => isEnabled;
+            get => change;
             set
             {
-                isEnabled = value;
-                OnPropertyChanged("IsEnabled");
+                change = value;
+                OnPropertyChanged("Change");
             }
         }
         #endregion
+
+        public Command EditCommand { get; }
+
+        public void OnEdit()
+        {
+            Change = true;
+        }
+
+        //Define a command for the Save button
+        public Command SaveCommand { get; }
+
+        //Define a method that will be called when the register button is clicked
+        public async void OnSave()
+        {
+            ValidateFirstName();
+            ValidateLastName();
+            ValidateEmail();
+            ValidatePassword();
+            ValidatePhoneNumber();
+            ValidateAddress();
+            
+            //Date = u.DateOfBirth.ToDateTime(time);
+            //PhoneNumber = u.PhoneNumber;
+            //Address = u.UserAddress;
+            //PhotoURL = u.ProfilePic;
+            //Gender = (char)u.Gender;
+            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError)
+            {
+                //Update AppUser object with the data from the Edit form
+                User theUser = ((App)App.Current).LoggedInUser;
+                theUser.FirstName = FirstName;
+                theUser.LastName = LastName;
+                theUser.Email = Email;
+                theUser.Pass = Password;
+                theUser.DateOfBirth = new DateOnly(Date.Year, Date.Month, Date.Day);
+                theUser.PhoneNumber = PhoneNumber;
+                theUser.UserAddress = Address;
+                theUser.Gender = Gender;
+                  
+
+                //Call the Register method on the proxy to register the new user
+                InServerCall = true;
+                bool success = await proxy.UpdateUser(theUser);
+
+                Change = false;
+                //If the save was successful, navigate to the login page
+                if (success)
+                {
+                    //Upload profile imae if needed
+                    if (!string.IsNullOrEmpty(LocalPhotoPath))
+                    {
+                        User? updatedUser = await proxy.UploadProfileImage(LocalPhotoPath);
+                        if (updatedUser == null)
+                        {
+                            await Shell.Current.DisplayAlert("Save Profile", "User Data Was Saved BUT Profile image upload failed", "ok");
+                        }
+                        else
+                        {
+                            theUser.ProfilePic = updatedUser.ProfilePic;
+                            UpdatePhotoURL(theUser.ProfilePic);
+                        }
+
+                    }
+                    InServerCall = false;
+                    await Shell.Current.DisplayAlert("Save Profile", "Profile saved successfully", "ok");
+                }
+                else
+                {
+                    InServerCall = false;
+                    //If the registration failed, display an error message
+                    string errorMsg = "Save Profile failed. Please try again.";
+                    await Shell.Current.DisplayAlert("Save Profile", errorMsg, "ok");
+                }
+            }
+        }
 
     }
 }

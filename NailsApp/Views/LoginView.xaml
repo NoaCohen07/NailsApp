@@ -8,15 +8,6 @@
        
         <VerticalStackLayout>
 
-        <!--<Button 
-        Text="Back to Home"
-        Command="{Binding HomeCommand}" 
-        IsEnabled="{Binding NotInServerCall}"
-        HorizontalOptions="Start"
-        BackgroundColor="LightPink"
-         TextColor="Black"
-            Margin="10"
-        />-->
 
         <Label 
         Text="Email"
