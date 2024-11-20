@@ -7,18 +7,26 @@ using System.Threading.Tasks;
 //using static Java.Util.Jar.Attributes;
 using NailsApp.Models;
 using NailsApp.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls;
+using NailsApp.Views;
+using System.Windows.Input;
 
 namespace NailsApp.ViewModels
 {
     public class ProfileViewModel : ViewModelBase
     {
         private NailsWebAPIProxy proxy;
+        private IServiceProvider serviceProvider;
+
         public ProfileViewModel(NailsWebAPIProxy proxy)
         {
             User u = ((App)Application.Current).LoggedInUser;//getting the current user using the game
  
             this.proxy = proxy;
             TimeOnly time = new TimeOnly();
+            PostCommand = new Command(OnPost);
+            TreatmentsCommand = new Command(OnTreatments);
             FirstName = u.FirstName;
             LastName = u.LastName;
             Email = u.Email;
@@ -29,6 +37,7 @@ namespace NailsApp.ViewModels
             PhotoURL = u.ProfilePic;
             Gender = (char)u.Gender;
             EditCommand = new Command(OnEdit);
+            ChatCommand = new Command(OnChat);
             SaveCommand = new Command(OnSave);
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
@@ -578,11 +587,7 @@ namespace NailsApp.ViewModels
             ValidatePhoneNumber();
             ValidateAddress();
             
-            //Date = u.DateOfBirth.ToDateTime(time);
-            //PhoneNumber = u.PhoneNumber;
-            //Address = u.UserAddress;
-            //PhotoURL = u.ProfilePic;
-            //Gender = (char)u.Gender;
+           
             if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError)
             {
                 //Update AppUser object with the data from the Edit form
@@ -632,6 +637,36 @@ namespace NailsApp.ViewModels
                 }
             }
         }
+        public ICommand PostCommand => new Command(OnPost);
+        
+      
+        public ICommand TreatmentsCommand { get; }
 
+        async void OnPost()
+        {
+            var navParam = new Dictionary<string, object>()
+            {
+                {"postView",PostView }
+            };
+        }
+        //public void OnPost()
+        //{
+        //    AppShell shell = serviceProvider.GetService<AppShell>();
+        //    PostViewModel postViewModel = serviceProvider.GetService<PostViewModel>();
+        //}
+
+        //public async void OnTreatments()
+        //{
+        //    await Shell.Current.GoToAsync("//animals/monkeys");
+   
+        //}
+
+        public Command ChatCommand { get; }
+
+        public void OnChat()
+        {
+            AppShell shell = serviceProvider.GetService<AppShell>();
+            ChatViewModel chatViewModel = serviceProvider.GetService<ChatViewModel>();
+        }
     }
 }

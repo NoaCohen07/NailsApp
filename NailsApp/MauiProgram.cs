@@ -40,6 +40,14 @@ namespace NailsApp
             builder.Services.AddTransient<ForgotPasswordView>();
             builder.Services.AddTransient<ProfileView>();
             builder.Services.AddTransient<NailInspoView>();
+            builder.Services.AddTransient<NailGalleryView>();
+            builder.Services.AddTransient<TreatmentsView>();
+            builder.Services.AddTransient<ChatsView>();
+            builder.Services.AddTransient<FilterView>();
+            builder.Services.AddTransient<FavoritesView>();
+            builder.Services.AddTransient<PostView>();
+            builder.Services.AddTransient<ChatView>();
+
             return builder;
         }
 
@@ -54,11 +62,20 @@ namespace NailsApp
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<UsersViewModel>();
-            builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<FindManicuristViewModel>();
+            //builder.Services.AddTransient<AppShell>();
+            builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<ForgotPasswordViewModel>();
             builder.Services.AddTransient<ProfileViewModel>();
             builder.Services.AddTransient<NailInspoViewModel>();
+            builder.Services.AddTransient<NailGalleryViewModel>();
+            builder.Services.AddTransient<TreatmentsViewModel>();
+            builder.Services.AddTransient<ChatsViewModel>();
+            builder.Services.AddTransient<FilterViewModel>();
+            builder.Services.AddTransient<FavoritesViewModel>();
+            builder.Services.AddTransient<PostViewModel>();
+            builder.Services.AddTransient<ChatViewModel>();
+
             return builder;
         }
     }

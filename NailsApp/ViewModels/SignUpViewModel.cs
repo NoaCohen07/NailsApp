@@ -27,10 +27,10 @@ namespace NailsApp.ViewModels
             FirstNameError = "Name is required";
             LastNameError = "Last name is required";
             EmailError = "Email is required";
-            DateError = "Age is required";
+            //DateError = "Age is required";
             PhoneNumberError = "Phone number is required";
             AddressError = "Address is required";
-            DateError = "Age is required";
+
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
 
             
@@ -198,17 +198,17 @@ namespace NailsApp.ViewModels
         #region DOB
 
 
-        private bool showDateError;
+        //private bool showDateError;
 
-        public bool ShowDateError
-        {
-            get => showDateError;
-            set
-            {
-                showDateError = value;
-                OnPropertyChanged("ShowDateError");
-            }
-        }
+        //public bool ShowDateError
+        //{
+        //    get => showDateError;
+        //    set
+        //    {
+        //        showDateError = value;
+        //        OnPropertyChanged("ShowDateError");
+        //    }
+        //}
 
         private DateTime date;
 
@@ -234,17 +234,17 @@ namespace NailsApp.ViewModels
             }
         }
 
-        private string dateError;
+        //private string dateError;
 
-        public string DateError
-        {
-            get => dateError;
-            set
-            {
-                dateError = value;
-                OnPropertyChanged("Date");
-            }
-        }
+        //public string DateError
+        //{
+        //    get => dateError;
+        //    set
+        //    {
+        //        dateError = value;
+        //        OnPropertyChanged("Date");
+        //    }
+        //}
 
     
         #endregion

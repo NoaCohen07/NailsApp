@@ -5,9 +5,10 @@
              Title="Profile">
     <ScrollView>
         <Grid>
+            <Grid>
 
 
-            <!-- Main Content -->
+                <!-- Main Content -->
             <VerticalStackLayout IsEnabled="{Binding NotInServerCall}" Padding="20">
                 <!-- Photo -->
                 <Frame BorderColor="Black" Padding="5" Margin="10" CornerRadius="50">
@@ -49,19 +50,34 @@ VerticalOptions="End">
                     </Grid>
                 </Frame>
 
-                <Button Text="Edit" Command="{Binding EditCommand}"/>
+                    <Button Text="Edit" Command="{Binding EditCommand}" Style="{StaticResource buttonStyle}"/>
                 <!-- First Name -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+                        <!--<Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+
+                        </Grid.RowDefinitions>-->
                     <Label Text="First Name" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
                     <Label Text="{Binding FirstNameError}" IsVisible="{Binding ShowFirstNameError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
-                </Grid>
-                <Entry Placeholder="Type First Name" Text="{Binding FirstName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+                     
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Entry Placeholder="Type First Name" Grid.Column="0" Text="{Binding FirstName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+                        <Button Style="{StaticResource buttonStyle}" Text="Treatments and Prices" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
+                  
 
-                <!-- Last Name -->
+                    </Grid>
+                  
+                    <!-- Last Name -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -70,7 +86,18 @@ VerticalOptions="End">
                     <Label Text="Last Name" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
                     <Label Text="{Binding LastNameError}" IsVisible="{Binding ShowLastNameError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
                 </Grid>
-                <Entry Placeholder="Type Last Name" Text="{Binding LastName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Entry Placeholder="Type Last Name" Text="{Binding LastName}" Grid.Column="0" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+                        <Button Style="{StaticResource buttonStyle}" Text="Message" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
+
+
+                    </Grid>
+                   
 
                 <!-- Email -->
                 <Grid>
@@ -154,7 +181,7 @@ VerticalOptions="End">
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Text="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding NotInServerCall}" Grid.Column="1" Style="{StaticResource buttonStyle}" IsVisible="{Binding Change}" />
+                        <Button Text="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding NotInServerCall}" Grid.Column="1" Style="{StaticResource buttonStyle}" IsVisible="{Binding Change}" />
                   
                 </Grid>
             </VerticalStackLayout>
@@ -164,7 +191,13 @@ VerticalOptions="End">
                    VerticalOptions="Center" 
                    HorizontalOptions="Center" />
         </Grid>
-
+            <Grid>
+                
+                
+            </Grid>
+            
+            
+        </Grid>
 
     </ScrollView>
 </ContentPage>

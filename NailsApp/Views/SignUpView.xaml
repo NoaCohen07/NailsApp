@@ -95,7 +95,7 @@ VerticalOptions="End">
 
                 <Label Text="Date of birth"/>
             
-                <Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
+                <!--<Label Text="{Binding DateError}" IsVisible="{Binding ShowDateError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />-->
                 <DatePicker  MaximumDate="{Binding MaxDate}" Date="{Binding Date}" />
              
 

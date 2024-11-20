@@ -36,7 +36,7 @@
                   TextDecorations="Underline">
                         <Span.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ForgotPassCommand}"/>
-                                          <!--CommandParameter="https://learn.microsoft.com/dotnet/maui/"--> 
+                                        
                         </Span.GestureRecognizers>
                     </Span>
                    
