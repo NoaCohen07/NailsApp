@@ -20,6 +20,7 @@ namespace NailsApp
             Routing.RegisterRoute(nameof(TreatmentsView), typeof(TreatmentsView));
            // Routing.RegisterRoute("connectingToServer", typeof(ConnectingToServerView));
             Routing.RegisterRoute(nameof(ProfileView), typeof(ProfileView));
+            Routing.RegisterRoute(nameof(PostView), typeof(PostView));
             Routing.RegisterRoute(nameof(ChatView), typeof(ChatView));
 
         }

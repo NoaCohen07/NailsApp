@@ -63,7 +63,7 @@ namespace NailsApp
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<UsersViewModel>();
             builder.Services.AddTransient<FindManicuristViewModel>();
-            //builder.Services.AddTransient<AppShell>();
+            builder.Services.AddTransient<ShellViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<ForgotPasswordViewModel>();
             builder.Services.AddTransient<ProfileViewModel>();

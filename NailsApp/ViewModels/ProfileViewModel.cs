@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
 using NailsApp.Views;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using Java.Time;
 
 namespace NailsApp.ViewModels
 {
@@ -25,6 +27,7 @@ namespace NailsApp.ViewModels
  
             this.proxy = proxy;
             TimeOnly time = new TimeOnly();
+            EditCommand = new Command(OnEdit);
             PostCommand = new Command(OnPost);
             TreatmentsCommand = new Command(OnTreatments);
             FirstName = u.FirstName;
@@ -36,7 +39,6 @@ namespace NailsApp.ViewModels
             Address = u.UserAddress;
             PhotoURL = u.ProfilePic;
             Gender = (char)u.Gender;
-            EditCommand = new Command(OnEdit);
             ChatCommand = new Command(OnChat);
             SaveCommand = new Command(OnSave);
             UploadPhotoCommand = new Command(OnUploadPhoto);
@@ -567,6 +569,88 @@ namespace NailsApp.ViewModels
         }
         #endregion
 
+        private ObservableCollection<Post> posts;
+        public ObservableCollection<Post> Posts
+        {
+            get
+            {
+                return this.posts;
+            }
+            set
+            {
+                this.posts = value;
+                OnPropertyChanged();
+            }
+        }
+       
+
+        private async void ReadPosts()
+        {
+            //serviceProvider = new StudentsService();
+            List<Post> list = await serviceProvider.GetPosts();
+            this.Posts = new ObservableCollection<Post>(list);
+        }
+        #region Single Selection
+        private Object selectedPost;
+        public Object SelectedPost
+        {
+            get
+            {
+                return this.selectedPost;
+            }
+            set
+            {
+                this.selectedPost = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand SingleSelectCommand => new Command(OnSingleSelectPost);
+
+        async void OnSingleSelectPost()
+        {
+            if (SelectedPost == null || !(SelectedPost is Post))
+            {
+               // SelectedPosts = "none";
+            }
+            else
+                //SelectedNames = ((Student)SelectedStudent).FirstName;
+        }
+
+
+        #endregion
+
+        #region Refresh View
+        public ICommand RefreshCommand => new Command(Refresh);
+        private async void Refresh()
+        {
+            Posts.Add(new Post
+            {
+                //FirstName = "Just",
+                //LastName = "Added!",
+                //BirthDate = DateTime.Now,
+                //AverageScore = 100
+            });
+
+
+            IsRefreshing = false;
+        }
+
+        private bool isRefreshing;
+        public bool IsRefreshing
+        {
+            get
+            {
+                return this.isRefreshing;
+            }
+            set
+            {
+                this.isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         public Command EditCommand { get; }
 
         public void OnEdit()
@@ -637,36 +721,28 @@ namespace NailsApp.ViewModels
                 }
             }
         }
-        public ICommand PostCommand => new Command(OnPost);
-        
-      
+        public ICommand PostCommand { get; }
+
+
         public ICommand TreatmentsCommand { get; }
 
-        async void OnPost()
+       
+        public async void OnPost()
         {
-            var navParam = new Dictionary<string, object>()
-            {
-                {"postView",PostView }
-            };
+            await AppShell.Current.GoToAsync("PostView");
         }
-        //public void OnPost()
-        //{
-        //    AppShell shell = serviceProvider.GetService<AppShell>();
-        //    PostViewModel postViewModel = serviceProvider.GetService<PostViewModel>();
-        //}
 
-        //public async void OnTreatments()
-        //{
-        //    await Shell.Current.GoToAsync("//animals/monkeys");
-   
-        //}
-
-        public Command ChatCommand { get; }
-
-        public void OnChat()
+        public async void OnTreatments()
         {
-            AppShell shell = serviceProvider.GetService<AppShell>();
-            ChatViewModel chatViewModel = serviceProvider.GetService<ChatViewModel>();
+            await Shell.Current.GoToAsync("TreatmentsView");
+
+        }
+
+        public ICommand ChatCommand { get; }
+
+        public async void OnChat()
+        {
+            await Shell.Current.GoToAsync("ChatView");
         }
     }
 }

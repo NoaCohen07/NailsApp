@@ -191,10 +191,10 @@ VerticalOptions="End">
                    VerticalOptions="Center" 
                    HorizontalOptions="Center" />
         </Grid>
-            <Grid>
+            <CollectionView>
                 
                 
-            </Grid>
+            </CollectionView>
             
             
         </Grid>
