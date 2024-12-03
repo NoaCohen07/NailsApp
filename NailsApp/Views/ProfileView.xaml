@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NailsApp.Views.ProfileView"
+             xmlns:Models="clr-namespace:NailsApp.Models"
              Title="Profile">
     <ScrollView>
-        <Grid>
+        <VerticalStackLayout>
             <Grid>
 
 
@@ -93,7 +94,7 @@ VerticalOptions="End">
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Entry Placeholder="Type Last Name" Text="{Binding LastName}" Grid.Column="0" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
-                        <Button Style="{StaticResource buttonStyle}" Text="Message" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
+                        <Button Style="{StaticResource buttonStyle}" Text="Message" Grid.Column="1" Command="{Binding ChatCommand}"/>
 
 
                     </Grid>
@@ -108,9 +109,20 @@ VerticalOptions="End">
                     <Label Text="Email" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
                     <Label Text="{Binding EmailError}" IsVisible="{Binding ShowEmailError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
                 </Grid>
-                <Entry Placeholder="Type Email" Text="{Binding Email}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
 
-                <!--Phone Number -->
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Entry Placeholder="Type Email" Text="{Binding Email}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
+                        <Button Style="{StaticResource buttonStyle}" Text="Favorites" Grid.Column="1" Command="{Binding FavoritesCommand}"/>
+
+
+                    </Grid>
+                  
+                    <!--Phone Number -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -190,14 +202,28 @@ VerticalOptions="End">
                    Color="Red" 
                    VerticalOptions="Center" 
                    HorizontalOptions="Center" />
-        </Grid>
-            <CollectionView>
+            </Grid>
+
+           
+            <CollectionView x:Name="collection" ItemsSource="{Binding Posts}"
+                ItemsLayout="VerticalGrid, 2">
                 
-                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Post">
+                        <ImageButton Grid.RowSpan="2"
+                       Source="{Binding Pic}"
+                                     Command="{Binding Source={x:Reference collection}, Path=BindingContext.SelectPostCommand}"
+                                     CommandParameter="{Binding .}"
+                       Aspect="AspectFill"
+                       HeightRequest="60"
+                       WidthRequest="60" />
+                       
+                       
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
             </CollectionView>
-            
-            
-        </Grid>
+
+        </VerticalStackLayout>
 
     </ScrollView>
 </ContentPage>

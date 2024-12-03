@@ -12,7 +12,7 @@ using Microsoft.Maui.Controls;
 using NailsApp.Views;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
-using Java.Time;
+//using Java.Time;
 
 namespace NailsApp.ViewModels
 {
@@ -30,6 +30,7 @@ namespace NailsApp.ViewModels
             EditCommand = new Command(OnEdit);
             PostCommand = new Command(OnPost);
             TreatmentsCommand = new Command(OnTreatments);
+            FavoritesCommand = new Command(OnFavorites);
             FirstName = u.FirstName;
             LastName = u.LastName;
             Email = u.Email;
@@ -43,6 +44,7 @@ namespace NailsApp.ViewModels
             SaveCommand = new Command(OnSave);
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
+            SelectPostCommand = new Command((Object obj) => SelectPost(obj));
             PhotoURL = proxy.GetDefaultProfilePhotoUrl();
             LocalPhotoPath = "";
             IsPassword = true;
@@ -569,6 +571,7 @@ namespace NailsApp.ViewModels
         }
         #endregion
 
+        #region Collection View of Posts
         private ObservableCollection<Post> posts;
         public ObservableCollection<Post> Posts
         {
@@ -586,10 +589,12 @@ namespace NailsApp.ViewModels
 
         private async void ReadPosts()
         {
-            //serviceProvider = new StudentsService();
-            List<Post> list = await serviceProvider.GetPosts();
+            
+            List<Post> list = await proxy.GetPosts();
             this.Posts = new ObservableCollection<Post>(list);
         }
+
+
         #region Single Selection
         private Object selectedPost;
         public Object SelectedPost
@@ -604,6 +609,11 @@ namespace NailsApp.ViewModels
                 OnPropertyChanged();
             }
         }
+        public ICommand SelectPostCommand { get;private set; }
+        public async void SelectPost(Object obj)
+        {
+
+        }
 
         public ICommand SingleSelectCommand => new Command(OnSingleSelectPost);
 
@@ -613,11 +623,11 @@ namespace NailsApp.ViewModels
             {
                // SelectedPosts = "none";
             }
-            else
+            else { }
                 //SelectedNames = ((Student)SelectedStudent).FirstName;
         }
 
-
+        #endregion
         #endregion
 
         #region Refresh View
@@ -743,6 +753,13 @@ namespace NailsApp.ViewModels
         public async void OnChat()
         {
             await Shell.Current.GoToAsync("ChatView");
+        }
+
+        public ICommand FavoritesCommand { get; }
+
+        public async void OnFavorites()
+        {
+            await Shell.Current.GoToAsync("FavoritesView");
         }
     }
 }

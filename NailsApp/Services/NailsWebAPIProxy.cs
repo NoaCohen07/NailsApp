@@ -190,6 +190,11 @@ namespace NailsApp.Services
                 return null;
             }
         }
+        private List<Post> posts;
+        public async Task<List<Post>> GetPosts()
+        {
+            return posts;
+        }
 
     }
 }

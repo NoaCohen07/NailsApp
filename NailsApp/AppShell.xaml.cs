@@ -22,7 +22,7 @@ namespace NailsApp
             Routing.RegisterRoute(nameof(ProfileView), typeof(ProfileView));
             Routing.RegisterRoute(nameof(PostView), typeof(PostView));
             Routing.RegisterRoute(nameof(ChatView), typeof(ChatView));
-
+            Routing.RegisterRoute(nameof(FavoritesView), typeof(FavoritesView));
         }
 
 
