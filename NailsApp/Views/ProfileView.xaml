@@ -73,7 +73,7 @@ VerticalOptions="End">
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Entry Placeholder="Type First Name" Grid.Column="0" Text="{Binding FirstName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
-                        <Button Style="{StaticResource buttonStyle}" Text="Treatments and Prices" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
+                        <Button Style="{StaticResource buttonStyle}" IsVisible="{Binding ShowTreatments}" Text="Treatments and Prices" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
                   
 
                     </Grid>
@@ -211,7 +211,7 @@ VerticalOptions="End">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="Models:Post">
                         <ImageButton Grid.RowSpan="2"
-                       Source="{Binding Pic}"
+                       Source="{Binding PostPicturePath}"
                                      Command="{Binding Source={x:Reference collection}, Path=BindingContext.SelectPostCommand}"
                                      CommandParameter="{Binding .}"
                        Aspect="AspectFill"

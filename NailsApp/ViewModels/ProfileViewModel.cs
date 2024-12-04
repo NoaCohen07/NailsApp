@@ -45,7 +45,7 @@ namespace NailsApp.ViewModels
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
             SelectPostCommand = new Command((Object obj) => SelectPost(obj));
-            PhotoURL = proxy.GetDefaultProfilePhotoUrl();
+            
             LocalPhotoPath = "";
             IsPassword = true;
             FirstNameError = "Name is required";
@@ -64,7 +64,7 @@ namespace NailsApp.ViewModels
 
             this.Date = dateMinusTenYears.AddDays(-1);
             MaxDate = dateMinusTenYears;
-
+            ReadPosts();
 
         }
 
@@ -385,7 +385,7 @@ namespace NailsApp.ViewModels
 
                 if (result != null)
                 {
-                    // The user picked a file
+                    // The user picked a filex
                     this.LocalPhotoPath = result.FullPath;
                     this.PhotoURL = result.FullPath;
                 }
@@ -589,8 +589,11 @@ namespace NailsApp.ViewModels
 
         private async void ReadPosts()
         {
-            
             List<Post> list = await proxy.GetPosts();
+            foreach(Post p in list)
+            {
+                p.PostPicturePath= proxy.GetImagesBaseAddress()+ p.PostPicturePath;
+            }
             this.Posts = new ObservableCollection<Post>(list);
         }
 
@@ -692,6 +695,7 @@ namespace NailsApp.ViewModels
                 theUser.Pass = Password;
                 theUser.DateOfBirth = new DateOnly(Date.Year, Date.Month, Date.Day);
                 theUser.PhoneNumber = PhoneNumber;
+                theUser.ProfilePic = PhotoURL;
                 theUser.UserAddress = Address;
                 theUser.Gender = Gender;
                   
@@ -760,6 +764,31 @@ namespace NailsApp.ViewModels
         public async void OnFavorites()
         {
             await Shell.Current.GoToAsync("FavoritesView");
+        }
+
+        private bool showTreatments;
+
+        public bool ShowTreatments
+        {
+            get => showTreatments;
+            set
+            {
+                showTreatments = value;
+                OnPropertyChanged("ShowTreatments");
+            }
+           
+            
+        }
+        private void ValidateManicurist()
+        {
+            if (((App)App.Current).LoggedInUser.IsManicurist == true)
+            {
+                this.ShowTreatments = true;
+            }
+            else
+            {
+                this.ShowTreatments = false;
+            }
         }
     }
 }

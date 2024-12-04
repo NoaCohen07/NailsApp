@@ -19,5 +19,7 @@ namespace NailsApp.Models
 
 
         public int PostId { get; set; }
+
+        public string PostPicturePath { get; set; } = null!;
     }
 }
