@@ -27,6 +27,7 @@ namespace NailsApp.ViewModels
             password = "";
             InServerCall = false;
             errorMsg = "";
+            ShowPasswordCommand = new Command(OnShowPassword);
         }
 
         private string email;
@@ -56,6 +57,25 @@ namespace NailsApp.ViewModels
                     OnPropertyChanged(nameof(Password));
                 }
             }
+        }
+        //This property will indicate if the password entry is a password
+        private bool isPassword = true;
+        public bool IsPassword
+        {
+            get => isPassword;
+            set
+            {
+                isPassword = value;
+                OnPropertyChanged("IsPassword");
+            }
+        }
+        //This command will trigger on pressing the password eye icon
+        public Command ShowPasswordCommand { get; }
+        //This method will be called when the password eye icon is pressed
+        public void OnShowPassword()
+        {
+            //Toggle the password visibility
+            IsPassword = !IsPassword;
         }
 
         private string errorMsg;

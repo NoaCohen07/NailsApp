@@ -45,6 +45,8 @@ namespace NailsApp
             builder.Services.AddTransient<ChatsView>();
             builder.Services.AddTransient<FilterView>();
             builder.Services.AddTransient<FavoritesView>();
+            builder.Services.AddTransient<ManicuristMapView>();
+
             builder.Services.AddTransient<PostView>();
             builder.Services.AddTransient<ChatView>();
 
@@ -75,6 +77,8 @@ namespace NailsApp
             builder.Services.AddTransient<FavoritesViewModel>();
             builder.Services.AddTransient<PostViewModel>();
             builder.Services.AddTransient<ChatViewModel>();
+            builder.Services.AddTransient<ManicuristMapViewModel>();
+
 
             return builder;
         }

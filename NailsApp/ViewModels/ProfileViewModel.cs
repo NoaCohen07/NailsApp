@@ -38,14 +38,21 @@ namespace NailsApp.ViewModels
             Date = u.DateOfBirth.ToDateTime(time); 
             PhoneNumber = u.PhoneNumber;
             Address = u.UserAddress;
-            PhotoURL = u.ProfilePic;
+            
+            PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
+            //if (PhotoURL == null)
+            //{
+            //    PhotoURL = proxy.GetDefaultProfilePhotoUrl();
+            //}
             Gender = (char)u.Gender;
             ChatCommand = new Command(OnChat);
             SaveCommand = new Command(OnSave);
+            PostCommand = new Command(OnPost);
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
-            SelectPostCommand = new Command((Object obj) => SelectPost(obj));
-            
+            //SelectPostCommand = new Command((Object obj) => SelectPost(obj));
+            SingleSelectCommand = new Command(OnSingleSelectPost);
+            ShowPasswordCommand = new Command(OnShowPassword);
             LocalPhotoPath = "";
             IsPassword = true;
             FirstNameError = "Name is required";
@@ -56,11 +63,12 @@ namespace NailsApp.ViewModels
             AddressError = "Address is required";
             DateError = "Age is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
+            //RefreshCommand = new Command(Refresh);
+            ValidateManicurist();
 
 
-
-            // Subtract 10 years
-            DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
+        // Subtract 10 years
+        DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
 
             this.Date = dateMinusTenYears.AddDays(-1);
             MaxDate = dateMinusTenYears;
@@ -553,6 +561,7 @@ namespace NailsApp.ViewModels
             {
                 isManicurist = value;
                 OnPropertyChanged("IsManicurist");
+               
             }
         }
         #endregion
@@ -599,8 +608,39 @@ namespace NailsApp.ViewModels
 
 
         #region Single Selection
-        private Object selectedPost;
-        public Object SelectedPost
+
+        //private TaskDisplay selectedObject;
+        //public TaskDisplay SelectedObject
+        //{
+        //    get => selectedObject;
+        //    set
+        //    {
+        //        selectedObject = value;
+        //        if (value != null)
+        //        {
+        //            // Extract the Id property by from the task object
+        //            int id = value.Id;
+        //            SelectedTask = userTasks.Where(t => t.TaskId == id).FirstOrDefault();
+        //        }
+        //        else
+        //            SelectedTask = null;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+        //private UserTask selectedTask;
+        //public UserTask SelectedTask
+        //{
+        //    get => selectedTask;
+        //    set
+        //    {
+        //        selectedTask = value;
+        //        OnTaskSelected(selectedTask);
+        //        OnPropertyChanged();
+        //    }
+        //}
+        private Post selectedPost;
+        public Post SelectedPost
         {
             get
             {
@@ -609,60 +649,57 @@ namespace NailsApp.ViewModels
             set
             {
                 this.selectedPost = value;
+                OnSingleSelectPost(selectedPost);
                 OnPropertyChanged();
             }
         }
-        public ICommand SelectPostCommand { get;private set; }
-        public async void SelectPost(Object obj)
+       
+
+        public ICommand SingleSelectCommand { get; private set; }/* => new Command(OnSingleSelectPost);*/
+
+        async void OnSingleSelectPost(Post p)
         {
-
-        }
-
-        public ICommand SingleSelectCommand => new Command(OnSingleSelectPost);
-
-        async void OnSingleSelectPost()
-        {
-            if (SelectedPost == null || !(SelectedPost is Post))
+            if (p != null)
             {
-               // SelectedPosts = "none";
+                var navParam = new Dictionary<string, Post>
+                {
+                    {"selectedPost",p }
+                };
+                await Shell.Current.GoToAsync("PostView", navParam);
+                SelectedPost = null;
+               
+                //AppShell.Current.GoToAsync("PostView");
+                SelectedPost = null;
             }
-            else { }
-                //SelectedNames = ((Student)SelectedStudent).FirstName;
         }
 
         #endregion
         #endregion
 
-        #region Refresh View
-        public ICommand RefreshCommand => new Command(Refresh);
-        private async void Refresh()
-        {
-            Posts.Add(new Post
-            {
-                //FirstName = "Just",
-                //LastName = "Added!",
-                //BirthDate = DateTime.Now,
-                //AverageScore = 100
-            });
+        //#region Refresh View
+        //public ICommand RefreshCommand { get; }
+        //private async void Refresh()
+        //{
+        //    ReadPosts();
 
+        //    IsRefreshing = false;
 
-            IsRefreshing = false;
-        }
+        //}
 
-        private bool isRefreshing;
-        public bool IsRefreshing
-        {
-            get
-            {
-                return this.isRefreshing;
-            }
-            set
-            {
-                this.isRefreshing = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
+        //private bool isRefreshing;
+        //public bool IsRefreshing
+        //{
+        //    get
+        //    {
+        //        return this.isRefreshing;
+        //    }
+        //    set
+        //    {
+        //        this.isRefreshing = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+        //#endregion
 
         public Command EditCommand { get; }
 
@@ -683,9 +720,10 @@ namespace NailsApp.ViewModels
             ValidatePassword();
             ValidatePhoneNumber();
             ValidateAddress();
+            //ValidateManicurist();
             
            
-            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError)
+            if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError )
             {
                 //Update AppUser object with the data from the Edit form
                 User theUser = ((App)App.Current).LoggedInUser;
@@ -698,6 +736,7 @@ namespace NailsApp.ViewModels
                 theUser.ProfilePic = PhotoURL;
                 theUser.UserAddress = Address;
                 theUser.Gender = Gender;
+                theUser.IsManicurist= IsManicurist;
                   
 
                 //Call the Register method on the proxy to register the new user
@@ -736,16 +775,12 @@ namespace NailsApp.ViewModels
             }
         }
         public ICommand PostCommand { get; }
-
-
-        public ICommand TreatmentsCommand { get; }
-
        
         public async void OnPost()
         {
             await AppShell.Current.GoToAsync("PostView");
         }
-
+        public ICommand TreatmentsCommand { get; }
         public async void OnTreatments()
         {
             await Shell.Current.GoToAsync("TreatmentsView");
@@ -776,8 +811,8 @@ namespace NailsApp.ViewModels
                 showTreatments = value;
                 OnPropertyChanged("ShowTreatments");
             }
-           
-            
+
+
         }
         private void ValidateManicurist()
         {

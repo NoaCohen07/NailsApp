@@ -5,7 +5,8 @@
              xmlns:Models="clr-namespace:NailsApp.Models"
              Title="Profile">
     <ScrollView>
-        <VerticalStackLayout>
+       
+            <VerticalStackLayout>
             <Grid>
 
 
@@ -73,7 +74,7 @@ VerticalOptions="End">
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Entry Placeholder="Type First Name" Grid.Column="0" Text="{Binding FirstName}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}"/>
-                        <Button Style="{StaticResource buttonStyle}" IsVisible="{Binding ShowTreatments}" Text="Treatments and Prices" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
+                        <Button Style="{StaticResource buttonStyle}" IsVisible="{Binding IsManicurist}" Text="Treatments and Prices" Grid.Column="1" Command="{Binding TreatmentsCommand}"/>
                   
 
                     </Grid>
@@ -155,17 +156,20 @@ VerticalOptions="End">
 
 
                 <!--Gender -->
-                <StackLayout RadioButtonGroup.GroupName="gender" RadioButtonGroup.SelectedValue="{Binding Gender}" Margin="10" IsEnabled="{Binding Change}">
                     <Label Text="Gender" />
+                    <StackLayout RadioButtonGroup.GroupName="gender" RadioButtonGroup.SelectedValue="{Binding Gender}" Margin="10" IsEnabled="{Binding Change}">
+                   
                     <RadioButton Content="Female" Value='F' />
                     <RadioButton Content="Male" Value='M'/>
                     <RadioButton Content="Other" Value='O' IsChecked="True" />
                 </StackLayout>
 
                 <!--User Type -->
-                <StackLayout RadioButtonGroup.GroupName="userType" RadioButtonGroup.SelectedValue="{Binding IsManicurist}" Margin="20" IsEnabled="{Binding Change}">
+                    <Label Text="User Type" />
+                    <StackLayout RadioButtonGroup.GroupName="userType" RadioButtonGroup.SelectedValue="{Binding IsManicurist}" Margin="10" IsEnabled="{Binding Change}">
                     <!--<Label Text="User Type" />-->
-                    <RadioButton Content="Manicurist" Value="true"/>
+                        
+                        <RadioButton Content="Manicurist" Value="true"/>
                     <RadioButton Content="Customer" Value="false" IsChecked="True"/>
                 </StackLayout>
 
@@ -176,15 +180,15 @@ VerticalOptions="End">
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label Text="Password" Grid.Column="0" Style="{StaticResource labelNameStyle}" />
-                    <Label Text="{Binding PasswordError}" IsVisible="{Binding ShowPasswordError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" IsEnabled="{Binding Change}"/>
+                    <Label Text="{Binding PasswordError}" IsVisible="{Binding ShowPasswordError}" Grid.Column="1" Style="{StaticResource labelErrorStyle}" />
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <Entry Grid.Column="0" Placeholder="Type Password" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{StaticResource entryStyle}" />
-                    <ImageButton Grid.Column="1" HeightRequest="25" Source="passwordeye.jpg" Command="{Binding ShowPasswordCommand}" />
+                        <Entry Grid.Column="0" Placeholder="Type Password" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{StaticResource entryStyle}" IsEnabled="{Binding Change}" />
+                    <ImageButton Grid.Column="1" HeightRequest="25" Source="passwordcloseeye.jpg" Command="{Binding ShowPasswordCommand}" />
                 </Grid>
 
                 <!-- Save Button -->
@@ -204,26 +208,38 @@ VerticalOptions="End">
                    HorizontalOptions="Center" />
             </Grid>
 
-           
-            <CollectionView x:Name="collection" ItemsSource="{Binding Posts}"
-                ItemsLayout="VerticalGrid, 2">
-                
+            <CollectionView ItemsSource="{Binding Posts}"  ItemsLayout="VerticalGrid, 2"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedPost}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="Models:Post">
-                        <ImageButton Grid.RowSpan="2"
-                       Source="{Binding PostPicturePath}"
-                                     Command="{Binding Source={x:Reference collection}, Path=BindingContext.SelectPostCommand}"
-                                     CommandParameter="{Binding .}"
-                       Aspect="AspectFill"
-                       HeightRequest="60"
-                       WidthRequest="60" />
-                       
-                       
+                    <DataTemplate>
+                        <Image Source="{Binding PostPicturePath}" Aspect="AspectFill"
+HeightRequest="200"
+WidthRequest="200"/>
+                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+                
+                
+            <!--<CollectionView x:Name="collection" ItemsSource="{Binding Posts}"
+                ItemsLayout="VerticalGrid, 2">
 
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Post">
+                        <ImageButton  Padding="1,1,1,1" Grid.RowSpan="2"
+                       Source="{Binding PostPicturePath}"
+                                     Command="{Binding Source={x:Reference collection}, Path=collection.BindingContext.SingleSelectCommand}"
+                                     CommandParameter="{Binding .}"
+                       Aspect="AspectFill"
+                       HeightRequest="200"
+                       WidthRequest="200"/>
+
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
         </VerticalStackLayout>
-
+      
     </ScrollView>
 </ContentPage>

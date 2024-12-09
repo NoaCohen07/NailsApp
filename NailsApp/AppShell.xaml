@@ -57,5 +57,5 @@
         Route="Filter" />
 
     </FlyoutItem>
-
+    <MenuItem Text="Log out" Command="{Binding LogoutCommand}" />
 </Shell>
