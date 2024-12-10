@@ -19,7 +19,7 @@ namespace NailsApp
         private void RegisterRoutes()
         {
             Routing.RegisterRoute(nameof(TreatmentsView), typeof(TreatmentsView));
-           // Routing.RegisterRoute("connectingToServer", typeof(ConnectingToServerView));
+           
             Routing.RegisterRoute(nameof(ProfileView), typeof(ProfileView));
             Routing.RegisterRoute("PostView", typeof(PostView));
             Routing.RegisterRoute(nameof(ChatView), typeof(ChatView));
@@ -27,10 +27,5 @@ namespace NailsApp
         }
 
 
-        //public ICommand LogOutCommand { get; set; }
-        //private void OnLogOut()
-        //{
-        //    DisplayAlert("Log out", "Are you sure you want to log out", "Ok");
-        //}
     }
 }

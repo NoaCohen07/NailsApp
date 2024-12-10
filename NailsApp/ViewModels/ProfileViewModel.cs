@@ -23,12 +23,12 @@ namespace NailsApp.ViewModels
 
         public ProfileViewModel(NailsWebAPIProxy proxy)
         {
-            User u = ((App)Application.Current).LoggedInUser;//getting the current user using the game
+            User u = ((App)Application.Current).LoggedInUser;//getting the current user using the app
  
             this.proxy = proxy;
             TimeOnly time = new TimeOnly();
             EditCommand = new Command(OnEdit);
-            PostCommand = new Command(OnPost);
+           
             TreatmentsCommand = new Command(OnTreatments);
             FavoritesCommand = new Command(OnFavorites);
             FirstName = u.FirstName;
@@ -40,18 +40,15 @@ namespace NailsApp.ViewModels
             Address = u.UserAddress;
             
             PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
-            //if (PhotoURL == null)
-            //{
-            //    PhotoURL = proxy.GetDefaultProfilePhotoUrl();
-            //}
+          
             Gender = (char)u.Gender;
             ChatCommand = new Command(OnChat);
             SaveCommand = new Command(OnSave);
-            PostCommand = new Command(OnPost);
+            
             UploadPhotoCommand = new Command(OnUploadPhoto);
             UploadTakePhotoCommand = new Command(OnUploadTakePhoto);
-            //SelectPostCommand = new Command((Object obj) => SelectPost(obj));
-            SingleSelectCommand = new Command(OnSingleSelectPost);
+            
+            
             ShowPasswordCommand = new Command(OnShowPassword);
             LocalPhotoPath = "";
             IsPassword = true;
@@ -64,13 +61,13 @@ namespace NailsApp.ViewModels
             DateError = "Age is required";
             PasswordError = "Password must be at least 4 characters long and contain letters and numbers";
             //RefreshCommand = new Command(Refresh);
-            ValidateManicurist();
+            //ValidateManicurist();
 
-
+            Posts = new ObservableCollection<Post>();
         // Subtract 10 years
         DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
 
-            this.Date = dateMinusTenYears.AddDays(-1);
+           // this.Date = dateMinusTenYears.AddDays(-1);
             MaxDate = dateMinusTenYears;
             ReadPosts();
 
@@ -609,36 +606,7 @@ namespace NailsApp.ViewModels
 
         #region Single Selection
 
-        //private TaskDisplay selectedObject;
-        //public TaskDisplay SelectedObject
-        //{
-        //    get => selectedObject;
-        //    set
-        //    {
-        //        selectedObject = value;
-        //        if (value != null)
-        //        {
-        //            // Extract the Id property by from the task object
-        //            int id = value.Id;
-        //            SelectedTask = userTasks.Where(t => t.TaskId == id).FirstOrDefault();
-        //        }
-        //        else
-        //            SelectedTask = null;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-        //private UserTask selectedTask;
-        //public UserTask SelectedTask
-        //{
-        //    get => selectedTask;
-        //    set
-        //    {
-        //        selectedTask = value;
-        //        OnTaskSelected(selectedTask);
-        //        OnPropertyChanged();
-        //    }
-        //}
+       
         private Post selectedPost;
         public Post SelectedPost
         {
@@ -655,51 +623,25 @@ namespace NailsApp.ViewModels
         }
        
 
-        public ICommand SingleSelectCommand { get; private set; }/* => new Command(OnSingleSelectPost);*/
 
-        async void OnSingleSelectPost(Post p)
+        private async void OnSingleSelectPost(Post p)
         {
             if (p != null)
             {
-                var navParam = new Dictionary<string, Post>
+                var navParam = new Dictionary<string, object>
                 {
                     {"selectedPost",p }
                 };
                 await Shell.Current.GoToAsync("PostView", navParam);
                 SelectedPost = null;
-               
-                //AppShell.Current.GoToAsync("PostView");
-                SelectedPost = null;
+            
             }
         }
 
         #endregion
         #endregion
 
-        //#region Refresh View
-        //public ICommand RefreshCommand { get; }
-        //private async void Refresh()
-        //{
-        //    ReadPosts();
-
-        //    IsRefreshing = false;
-
-        //}
-
-        //private bool isRefreshing;
-        //public bool IsRefreshing
-        //{
-        //    get
-        //    {
-        //        return this.isRefreshing;
-        //    }
-        //    set
-        //    {
-        //        this.isRefreshing = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-        //#endregion
+        
 
         public Command EditCommand { get; }
 
@@ -774,12 +716,7 @@ namespace NailsApp.ViewModels
                 }
             }
         }
-        public ICommand PostCommand { get; }
-       
-        public async void OnPost()
-        {
-            await AppShell.Current.GoToAsync("PostView");
-        }
+        
         public ICommand TreatmentsCommand { get; }
         public async void OnTreatments()
         {
@@ -801,29 +738,29 @@ namespace NailsApp.ViewModels
             await Shell.Current.GoToAsync("FavoritesView");
         }
 
-        private bool showTreatments;
+        //private bool showTreatments;
 
-        public bool ShowTreatments
-        {
-            get => showTreatments;
-            set
-            {
-                showTreatments = value;
-                OnPropertyChanged("ShowTreatments");
-            }
+        //public bool ShowTreatments
+        //{
+        //    get => showTreatments;
+        //    set
+        //    {
+        //        showTreatments = value;
+        //        OnPropertyChanged("ShowTreatments");
+        //    }
 
 
-        }
-        private void ValidateManicurist()
-        {
-            if (((App)App.Current).LoggedInUser.IsManicurist == true)
-            {
-                this.ShowTreatments = true;
-            }
-            else
-            {
-                this.ShowTreatments = false;
-            }
-        }
+        //}
+        //private void ValidateManicurist()
+        //{
+        //    if (((App)App.Current).LoggedInUser.IsManicurist == true)
+        //    {
+        //        this.ShowTreatments = true;
+        //    }
+        //    else
+        //    {
+        //        this.ShowTreatments = false;
+        //    }
+        //}
     }
 }
