@@ -223,5 +223,68 @@ namespace NailsApp.Services
             }
         }
 
+        public async Task<List<Comment>> GetComments(int postId)
+        {
+
+            //Set URI to the specific function API
+            string url = $"{this.baseUrl}GetPostComments?postId={postId}";
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                //Check status
+                if (response.IsSuccessStatusCode)
+                {
+                    //Extract the content as string
+                    string resContent = await response.Content.ReadAsStringAsync();
+                    //Desrialize result
+                    JsonSerializerOptions options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    List<Comment>? result = JsonSerializer.Deserialize<List<Comment>>(resContent, options);
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        
+        public async Task<int> GetLikes(int postId)
+        {
+            //Set URI to the specific function API
+            string url = $"{this.baseUrl}GetLikes?postId={postId}";
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                //Check status
+                if (response.IsSuccessStatusCode)
+                {
+                    //Extract the content as string
+                    string resContent = await response.Content.ReadAsStringAsync();
+                    //Desrialize result
+                    JsonSerializerOptions options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                   int result = JsonSerializer.Deserialize<int>(resContent, options);
+                   return result;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
     }
 }

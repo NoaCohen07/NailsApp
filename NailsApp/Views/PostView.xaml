@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:NailsApp.ViewModels"
              xmlns:Models="clr-namespace:NailsApp.Models"
-             x:DataType="viewModel:PostViewModel"
              x:Class="NailsApp.Views.PostView"
+             x:DataType="viewModel:PostViewModel"
+             Title="PostView">
+             
+             
               
 
-             Title="PostView">
+             
     <VerticalStackLayout  IsEnabled="{Binding NotInServerCall}">
         <Frame CornerRadius="50" HeightRequest="60" WidthRequest="60" HorizontalOptions="Start" Margin="5">
             <ImageButton Source="{Binding PhotoURL}" Command="{Binding ProfileCommand}" CornerRadius="50" HeightRequest="60" WidthRequest="60" />
