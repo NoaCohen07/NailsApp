@@ -15,7 +15,6 @@ namespace NailsApp.ViewModels
     [QueryProperty(nameof(Post), "selectedPost")]
     public class PostViewModel:ViewModelBase
     {
-        private Post selectedPost;
         private NailsWebAPIProxy proxy;
         private IServiceProvider serviceProvider;
 
@@ -46,7 +45,7 @@ namespace NailsApp.ViewModels
             //PostURL = proxy.GetImagesBaseAddress() + Post.PostPicturePath;
             ProfileCommand = new Command(OnProfile);
             this.serviceProvider = serviceProvider;
-            PostDescription = Post.PostText;
+            //PostDescription = Post.PostText;
             //PostTime = Post.PostTime;
         }
 
@@ -131,7 +130,7 @@ namespace NailsApp.ViewModels
             set
             {
                 postURL = value;
-                //OnPropertyChanged("PhotoURL");
+                OnPropertyChanged("PhotoURL");
             }
         }
 
@@ -177,7 +176,7 @@ namespace NailsApp.ViewModels
         {
             PostTime = post.PostTime;
             PostDescription = post.PostText;
-            PostURL = proxy.GetImagesBaseAddress() + post.PostPicturePath;
+            PostURL =/* proxy.GetImagesBaseAddress() +*/ post.PostPicturePath;
             PostData postData=new PostData();
             //Initialize the comments collection
             //PostComments = new ObservableCollection<Comment>(UserTask.TaskComments);

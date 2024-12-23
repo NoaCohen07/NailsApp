@@ -11,8 +11,6 @@ namespace NailsApp
             this.BindingContext = vm;
             InitializeComponent();
             RegisterRoutes();
-
-            
         }
 
 

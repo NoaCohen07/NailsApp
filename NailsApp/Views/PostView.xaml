@@ -6,23 +6,29 @@
              x:Class="NailsApp.Views.PostView"
              x:DataType="viewModel:PostViewModel"
              Title="PostView">
-             
-             
-              
-
-             
+       
     <VerticalStackLayout  IsEnabled="{Binding NotInServerCall}">
-        <Frame CornerRadius="50" HeightRequest="60" WidthRequest="60" HorizontalOptions="Start" Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Frame CornerRadius="50" HeightRequest="60" WidthRequest="60" HorizontalOptions="Start" Margin="5" Grid.Column="0">
             <ImageButton Source="{Binding PhotoURL}" Command="{Binding ProfileCommand}" CornerRadius="50" HeightRequest="60" WidthRequest="60" />
         </Frame>
-        <Label Text="{Binding Name}" HorizontalOptions="Center" />
-
+            <Label Text="{Binding Name}" Grid.Column="1" FontSize="Title"/>
+        </Grid>
         <Image 
             Source="{Binding PostURL}"
-            Aspect="AspectFit"
-            
-        />
-
+           HeightRequest="500"
+           WidthRequest="500"
+            />
+        <Label Text="{Binding PostDescription}" FontSize="Medium"/>
 
     </VerticalStackLayout>
 </ContentPage>

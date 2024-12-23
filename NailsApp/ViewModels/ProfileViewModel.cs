@@ -633,7 +633,7 @@ namespace NailsApp.ViewModels
                     {"selectedPost",p }
                 };
                 await Shell.Current.GoToAsync("PostView", navParam);
-                SelectedPost = null;
+                //SelectedPost = null;
             
             }
         }
@@ -738,29 +738,6 @@ namespace NailsApp.ViewModels
             await Shell.Current.GoToAsync("FavoritesView");
         }
 
-        //private bool showTreatments;
-
-        //public bool ShowTreatments
-        //{
-        //    get => showTreatments;
-        //    set
-        //    {
-        //        showTreatments = value;
-        //        OnPropertyChanged("ShowTreatments");
-        //    }
-
-
-        //}
-        //private void ValidateManicurist()
-        //{
-        //    if (((App)App.Current).LoggedInUser.IsManicurist == true)
-        //    {
-        //        this.ShowTreatments = true;
-        //    }
-        //    else
-        //    {
-        //        this.ShowTreatments = false;
-        //    }
-        //}
+    
     }
 }
