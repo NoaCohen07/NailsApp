@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Android.App;
 using Microsoft.Extensions.DependencyInjection;
 using NailsApp.Models;
 using NailsApp.Services;
@@ -28,7 +29,7 @@ namespace NailsApp.ViewModels
                 if (post != value)
                 {
                     post = value;
-                    InItFieldsData();
+                    InItFieldsDataAsync();
                     OnPropertyChanged(nameof(Post));
                 }
             }
@@ -40,13 +41,11 @@ namespace NailsApp.ViewModels
             FirstName = u.FirstName;
             LastName = u.LastName;
             Name = FirstName + " " + LastName;
-            //SelectedPost = new Post();
             PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
-            //PostURL = proxy.GetImagesBaseAddress() + Post.PostPicturePath;
             ProfileCommand = new Command(OnProfile);
             this.serviceProvider = serviceProvider;
-            //PostDescription = Post.PostText;
-            //PostTime = Post.PostTime;
+            LikeCommand=new Command(OnLikeClicked);
+
         }
 
         #region Name
@@ -113,15 +112,7 @@ namespace NailsApp.ViewModels
         #endregion
 
         #region PostImage
-        //public Post SelectedPost
-        //{
-        //    get => selectedPost;
-        //    set
-        //    {
-        //        selectedPost = value;
-        //        //OnPropertyChanged();
-        //    }
-        //}
+        
         private string postURL;
 
         public string PostURL
@@ -130,7 +121,7 @@ namespace NailsApp.ViewModels
             set
             {
                 postURL = value;
-                OnPropertyChanged("PhotoURL");
+                OnPropertyChanged("PostURL");
             }
         }
 
@@ -172,14 +163,17 @@ namespace NailsApp.ViewModels
 
         #region In it Fields with data
         //Define a method to initialize the fields with data
-        private void InItFieldsData()
+
+        private async void InItFieldsDataAsync()
         {
             PostTime = post.PostTime;
             PostDescription = post.PostText;
-            PostURL =/* proxy.GetImagesBaseAddress() +*/ post.PostPicturePath;
+            PostURL = post.PostPicturePath;
             PostData postData=new PostData();
             //Initialize the comments collection
-            //PostComments = new ObservableCollection<Comment>(UserTask.TaskComments);
+            List<Comment> list = await proxy.GetComments(post.PostId);
+            PostComments = new ObservableCollection<Comment>(list);
+            PostLikes=await proxy.GetLikes(post.PostId);
         }
         #endregion
 
@@ -213,6 +207,14 @@ namespace NailsApp.ViewModels
             get => !string.IsNullOrEmpty(NewComment);
         }
 
+        public Command CommentsCommand { get; }
+
+        public async void OnComments()
+        {
+           // await Application.Current.MainPage.DisplayAlert("Comments", ,"close");
+
+        }
+
         #endregion
 
         #region Add Comment
@@ -233,7 +235,64 @@ namespace NailsApp.ViewModels
         }
         #endregion
 
-      
+
+        #region PostLikes
+        private int postLikes;
+        public int PostLikes
+        {
+            get => postLikes;
+            set
+            {
+                postLikes = value;
+                OnPropertyChanged(nameof(PostLikes));
+            }
+        }
+
+        private bool isLiked;
+
+        // Property for the "liked" status
+        public bool IsLiked
+        {
+            get => isLiked;
+            set
+            {
+                if (isLiked != value)
+                {
+                    isLiked = value;
+                    OnPropertyChanged(nameof(IsLiked));
+                }
+            }
+        }
+
+        // Command for the "Like" button
+        public ICommand LikeCommand { get; }
+
+
+        // This method is invoked when the "Like" button is clicked
+        // Command for the like button
+    
+
+        // This method is invoked when the Like button is clicked
+        private void OnLikeClicked()
+        {
+            if (IsLiked)
+            {
+                // If already liked, decrease the like count
+                PostLikes--;
+            }
+            else
+            {
+                // If not liked, increase the like count
+                PostLikes++;
+            }
+
+            // Toggle the IsLiked state
+            IsLiked = !IsLiked;
+        }
+        #endregion
+
+
+
     }
 
 }

@@ -8,7 +8,7 @@ namespace NailsApp.Models
 {
     public class PostData
     {
-        public List<Comment> PostComments { get; set; }
-        public int numLikes { get; set; }
+        public virtual ICollection<Comment> PostComments { get; set; } = new List<Comment>();
+        public int NumLikes { get; set; }
     }
 }

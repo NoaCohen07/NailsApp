@@ -4,6 +4,7 @@ using NailsApp.Views;
 using NailsApp.ViewModels;
 using NailsApp.Services;
 
+
 namespace NailsApp
 {
     public static class MauiProgram
@@ -13,6 +14,7 @@ namespace NailsApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+               
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

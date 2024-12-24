@@ -4,8 +4,10 @@
              xmlns:viewModel="clr-namespace:NailsApp.ViewModels"
              xmlns:Models="clr-namespace:NailsApp.Models"
              x:Class="NailsApp.Views.PostView"
+             
              x:DataType="viewModel:PostViewModel"
-             Title="PostView">
+             
+             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui">
        
     <VerticalStackLayout  IsEnabled="{Binding NotInServerCall}">
         <Grid>
@@ -28,6 +30,8 @@
            HeightRequest="500"
            WidthRequest="500"
             />
+
+        
         <Label Text="{Binding PostDescription}" FontSize="Medium"/>
 
     </VerticalStackLayout>
