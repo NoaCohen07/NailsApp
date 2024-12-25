@@ -16,32 +16,37 @@ using System.Collections.ObjectModel;
 
 namespace NailsApp.ViewModels
 {
+    [QueryProperty(nameof(User), "selectedUser")]
     public class ProfileViewModel : ViewModelBase
     {
         private NailsWebAPIProxy proxy;
         private IServiceProvider serviceProvider;
+        private User user;
+        public User User
+        {
+            get => user;
+            set
+            {
+                if (user != value)
+                {
+                    user = value;
+                    InItFieldsDataAsync();
+                    OnPropertyChanged(nameof(User));
+                }
+            }
+        }
 
         public ProfileViewModel(NailsWebAPIProxy proxy)
         {
-            User u = ((App)Application.Current).LoggedInUser;//getting the current user using the app
+            //User u = ((App)Application.Current).LoggedInUser;//getting the current user using the app
  
             this.proxy = proxy;
-            TimeOnly time = new TimeOnly();
+           
             EditCommand = new Command(OnEdit);
            
             TreatmentsCommand = new Command(OnTreatments);
             FavoritesCommand = new Command(OnFavorites);
-            FirstName = u.FirstName;
-            LastName = u.LastName;
-            Email = u.Email;
-            Password = u.Pass;
-            Date = u.DateOfBirth.ToDateTime(time); 
-            PhoneNumber = u.PhoneNumber;
-            Address = u.UserAddress;
             
-            PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
-          
-            Gender = (char)u.Gender;
             ChatCommand = new Command(OnChat);
             SaveCommand = new Command(OnSave);
             
@@ -64,8 +69,8 @@ namespace NailsApp.ViewModels
             //ValidateManicurist();
 
             Posts = new ObservableCollection<Post>();
-        // Subtract 10 years
-        DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
+            // Subtract 10 years
+            DateTime dateMinusTenYears = DateTime.Now.AddYears(-10);
 
            // this.Date = dateMinusTenYears.AddDays(-1);
             MaxDate = dateMinusTenYears;
@@ -633,7 +638,8 @@ namespace NailsApp.ViewModels
                     {"selectedPost",p }
                 };
                 await Shell.Current.GoToAsync("PostView", navParam);
-                //SelectedPost = null;
+                
+                SelectedPost = null;
             
             }
         }
@@ -641,7 +647,25 @@ namespace NailsApp.ViewModels
         #endregion
         #endregion
 
-        
+        #region In it Fields with data
+        //Define a method to initialize the fields with data
+
+        private async void InItFieldsDataAsync()
+        {
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Email = user.Email;
+            Password = user.Pass;
+            TimeOnly time = new TimeOnly();
+            Date = user.DateOfBirth.ToDateTime(time);
+            PhoneNumber = user.PhoneNumber;
+            Address = user.UserAddress;
+
+            PhotoURL = proxy.GetImagesBaseAddress() + user.ProfilePic;
+
+            Gender = (char)user.Gender;
+        }
+        #endregion
 
         public Command EditCommand { get; }
 
@@ -668,7 +692,7 @@ namespace NailsApp.ViewModels
             if (!ShowFirstNameError && !ShowLastNameError && !ShowEmailError && !ShowPasswordError && !ShowPhoneNumberError && !ShowAddressError )
             {
                 //Update AppUser object with the data from the Edit form
-                User theUser = ((App)App.Current).LoggedInUser;
+                User theUser = User;
                 theUser.FirstName = FirstName;
                 theUser.LastName = LastName;
                 theUser.Email = Email;

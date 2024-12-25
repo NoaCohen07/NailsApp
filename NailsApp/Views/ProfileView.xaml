@@ -221,24 +221,7 @@ WidthRequest="200"/>
                 </CollectionView.ItemTemplate>
             </CollectionView>
                 
-                
-            <!--<CollectionView x:Name="collection" ItemsSource="{Binding Posts}"
-                ItemsLayout="VerticalGrid, 2">
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="Models:Post">
-                        <ImageButton  Padding="1,1,1,1" Grid.RowSpan="2"
-                       Source="{Binding PostPicturePath}"
-                                     Command="{Binding Source={x:Reference collection}, Path=collection.BindingContext.SingleSelectCommand}"
-                                     CommandParameter="{Binding .}"
-                       Aspect="AspectFill"
-                       HeightRequest="200"
-                       WidthRequest="200"/>
-
-
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>-->
+        
         </VerticalStackLayout>
       
     </ScrollView>

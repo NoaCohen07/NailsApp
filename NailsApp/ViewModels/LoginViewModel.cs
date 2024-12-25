@@ -124,7 +124,17 @@ namespace NailsApp.ViewModels
                // profileViewModel.Refresh(); //Refresh data and user in the tasksview model as it is a singleton
                 ((App)Application.Current).MainPage = shell;
                 Shell.Current.FlyoutIsPresented = false; //close the flyout
-               Shell.Current.GoToAsync("Profile"); //Navigate to the Tasks tab page
+               
+                var navParam = new Dictionary<string, object>
+                {
+                    {"selectedUser",u }
+                };
+                await Shell.Current.GoToAsync("ProfileView", navParam);
+
+                    //SelectedPost = null;
+
+                
+                //Shell.Current.GoToAsync("Profile"); //Navigate to the Tasks tab page
             }
         }
 

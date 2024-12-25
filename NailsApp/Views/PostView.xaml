@@ -4,11 +4,10 @@
              xmlns:viewModel="clr-namespace:NailsApp.ViewModels"
              xmlns:Models="clr-namespace:NailsApp.Models"
              x:Class="NailsApp.Views.PostView"
-             
              x:DataType="viewModel:PostViewModel"
-             
-             xmlns:the49="https://schemas.the49.com/dotnet/2023/maui">
-       
+             Title="Post">
+
+    <ScrollView>
     <VerticalStackLayout  IsEnabled="{Binding NotInServerCall}">
         <Grid>
             <Grid.RowDefinitions>
@@ -25,14 +24,52 @@
         </Frame>
             <Label Text="{Binding Name}" Grid.Column="1" FontSize="Title"/>
         </Grid>
-        <Image 
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image 
+            ZIndex="1"
             Source="{Binding PostURL}"
            HeightRequest="500"
            WidthRequest="500"
             />
 
-        
-        <Label Text="{Binding PostDescription}" FontSize="Medium"/>
+                <Frame ZIndex="30">
+                    <CollectionView ItemsSource="{Binding PostComments}" ItemsLayout="VerticalGrid, 1"
+                    SelectionMode="None" >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="Models:Comment">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding CommentText}" Grid.Column="0"/>
+                                    <Label Text="{Binding CommentTime}" Grid.Column="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+                </Frame>
+            </Grid>
+            <Label Text="{Binding PostLikes}" Margin="10"/>
+            <Frame CornerRadius="50" HeightRequest="40" WidthRequest="40" HorizontalOptions="Start" Margin="5" Grid.Column="0">
+                <ImageButton Source="{Binding LikePic}" Command="{Binding LikeCommand}" CornerRadius="50" HeightRequest="40" WidthRequest="40" />
+            </Frame>
+            <Label Text="{Binding PostDescription}" FontSize="Medium"/>
 
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

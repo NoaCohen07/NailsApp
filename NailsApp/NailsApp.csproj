@@ -61,6 +61,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\emptylike.png" />
+	  <None Remove="Resources\Images\like.jpg" />
 	  <None Remove="Resources\Images\passwordcloseeye.png" />
 	  <None Remove="Resources\Images\passwordopeneye.png" />
 	</ItemGroup>

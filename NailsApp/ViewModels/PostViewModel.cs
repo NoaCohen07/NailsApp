@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Android.App;
+//using Android.App;
 using Microsoft.Extensions.DependencyInjection;
 using NailsApp.Models;
 using NailsApp.Services;
@@ -18,8 +18,8 @@ namespace NailsApp.ViewModels
     {
         private NailsWebAPIProxy proxy;
         private IServiceProvider serviceProvider;
-
-
+        private int likeCount = 0;
+       
         private Post post;
         public Post Post
         {
@@ -35,17 +35,13 @@ namespace NailsApp.ViewModels
             }
         }
         public PostViewModel(NailsWebAPIProxy proxy, IServiceProvider serviceProvider)
-        {
+        {   
             this.proxy = proxy;
-            User u = ((App)Application.Current).LoggedInUser;//getting the current user using the app
-            FirstName = u.FirstName;
-            LastName = u.LastName;
-            Name = FirstName + " " + LastName;
-            PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
-            ProfileCommand = new Command(OnProfile);
+            
+            //ProfileCommand = new Command(OnProfile);
             this.serviceProvider = serviceProvider;
             LikeCommand=new Command(OnLikeClicked);
-
+            LikePic = "emptylike.png";
         }
 
         #region Name
@@ -57,6 +53,7 @@ namespace NailsApp.ViewModels
             set
             {
                 firstName = value;
+                OnPropertyChanged("FirstName");
             }
         }
 
@@ -69,7 +66,7 @@ namespace NailsApp.ViewModels
             {
                 lastName = value;
                 //ValidateLastName();
-                //OnPropertyChanged("LastName");
+                OnPropertyChanged("LastName");
             }
         }
 
@@ -80,6 +77,7 @@ namespace NailsApp.ViewModels
             set
             {
                 name = value;
+                OnPropertyChanged("Name");
             }
         }
         #endregion
@@ -94,7 +92,7 @@ namespace NailsApp.ViewModels
             set
             {
                 photoURL = value;
-                //OnPropertyChanged("PhotoURL");
+                OnPropertyChanged("PhotoURL");
             }
         }
 
@@ -106,7 +104,7 @@ namespace NailsApp.ViewModels
             set
             {
                 localPhotoPath = value;
-                // OnPropertyChanged("LocalPhotoPath");
+                OnPropertyChanged("LocalPhotoPath");
             }
         }
         #endregion
@@ -126,9 +124,19 @@ namespace NailsApp.ViewModels
         }
 
         public ICommand ProfileCommand { get; }
-        public async void OnProfile()
+        public async void OnProfile(User p)
         {
-            await Shell.Current.GoToAsync("ProfileView");
+            if (p != null)
+            {
+                var navParam = new Dictionary<string, object>
+                {
+                    {"selectedUser",p }
+                };
+                await Shell.Current.GoToAsync("ProfileView", navParam);
+                //SelectedPost = null;
+
+            }
+
 
         }
         #endregion
@@ -166,6 +174,8 @@ namespace NailsApp.ViewModels
 
         private async void InItFieldsDataAsync()
         {
+            int userId = (int)post.UserId;
+            User u = await proxy.GetUser(userId);
             PostTime = post.PostTime;
             PostDescription = post.PostText;
             PostURL = post.PostPicturePath;
@@ -174,6 +184,18 @@ namespace NailsApp.ViewModels
             List<Comment> list = await proxy.GetComments(post.PostId);
             PostComments = new ObservableCollection<Comment>(list);
             PostLikes=await proxy.GetLikes(post.PostId);
+            FirstName = u.FirstName;
+            LastName = u.LastName;
+            Name = FirstName + " " + LastName;
+            if (u.ProfilePic == null)
+            {
+                PhotoURL = proxy.GetDefaultProfilePhotoUrl();
+            }
+            else
+            {
+                PhotoURL = proxy.GetImagesBaseAddress() + u.ProfilePic;
+            }
+            
         }
         #endregion
 
@@ -248,46 +270,42 @@ namespace NailsApp.ViewModels
             }
         }
 
-        private bool isLiked;
-
-        // Property for the "liked" status
-        public bool IsLiked
+   
+        private string likePic;
+        public string LikePic
         {
-            get => isLiked;
+            get => likePic;
             set
             {
-                if (isLiked != value)
-                {
-                    isLiked = value;
-                    OnPropertyChanged(nameof(IsLiked));
-                }
+                likePic = value;
+                OnPropertyChanged(nameof(LikePic));
             }
         }
-
         // Command for the "Like" button
         public ICommand LikeCommand { get; }
 
 
         // This method is invoked when the "Like" button is clicked
         // Command for the like button
-    
 
-        // This method is invoked when the Like button is clicked
-        private void OnLikeClicked()
+
+      
+        public void OnLikeClicked()
         {
-            if (IsLiked)
+            // Increment the click count
+            likeCount++;
+            // Switch between different images based on the click count
+            if (likeCount % 2 == 0)
             {
-                // If already liked, decrease the like count
                 PostLikes--;
+                LikePic = "emptylike.png"; // First image
             }
             else
             {
-                // If not liked, increase the like count
                 PostLikes++;
+                LikePic = "like.jpg"; // Second image
             }
 
-            // Toggle the IsLiked state
-            IsLiked = !IsLiked;
         }
         #endregion
 
